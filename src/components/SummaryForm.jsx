@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Spin } from 'antd';
 
-export default function ProfileForm({ token, userId }) {
+export default function SummaryForm({ token, userId }) {
     const [bio, setBio] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
