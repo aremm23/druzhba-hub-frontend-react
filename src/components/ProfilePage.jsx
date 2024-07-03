@@ -4,9 +4,9 @@ import { Image, Rate, Carousel, Menu, Button, Modal, List, Avatar, message } fro
 import PostDetails from './PostDetails';
 import ReviewCard from './ReviewCard';
 import './Carousel.css';
-import { UserOutlined, HomeOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
+import {UserOutlined, HomeOutlined, EditOutlined, SearchOutlined, LogoutOutlined} from '@ant-design/icons';
 
-export default function ProfilePage({ currentUserId, token, profileId }) {
+export default function ProfilePage({ currentUserId, token, profileId, onLogout  }) {
     const [userProfile, setUserProfile] = useState(null);
     const [userImages, setUserImages] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -257,13 +257,21 @@ export default function ProfilePage({ currentUserId, token, profileId }) {
                         className="w-60 h-60 rounded-full object-cover border-4 border-purple-500 hover:scale-[1.01]"
                     />
                 )}
+                <Button
+                    type="primary"
+                    icon={<LogoutOutlined/>}
+                    onClick={onLogout}
+                >
+                    Выйти
+                </Button>
             </div>
             <div className="grid grid-cols-3 gap-4 text-center mb-10">
                 <div className="bg-white p-4 rounded-lg shadow cursor-pointer" onClick={() => setShowSubscribers(true)}>
                     <label className="text-lg font-medium text-gray-600">Подписчики</label>
                     <p className="text-2xl text-purple-700">{subscribers.length}</p>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow cursor-pointer" onClick={() => setShowSubscriptions(true)}>
+                <div className="bg-white p-4 rounded-lg shadow cursor-pointer"
+                     onClick={() => setShowSubscriptions(true)}>
                     <label className="text-lg font-medium text-gray-600">Подписки</label>
                     <p className="text-2xl text-purple-700">{subscriptions.length}</p>
                 </div>
