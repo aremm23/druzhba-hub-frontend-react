@@ -4,9 +4,13 @@ import { Image, Rate, Carousel, Menu, Button, Modal, List, Avatar, message } fro
 import PostDetails from './PostDetails';
 import ReviewCard from './ReviewCard';
 import './Carousel.css';
-import {UserOutlined, HomeOutlined, EditOutlined, SearchOutlined, LogoutOutlined} from '@ant-design/icons';
+import {
+    UserOutlined, HomeOutlined, EditOutlined, SearchOutlined,
+    LogoutOutlined, LikeOutlined, UserSwitchOutlined
+} from '@ant-design/icons';
+import { useNavigate, Link } from 'react-router-dom';
 
-export default function ProfilePage({ currentUserId, token, profileId, onLogout  }) {
+export default function ProfilePage({ currentUserId, token, profileId, onLogout }) {
     const [userProfile, setUserProfile] = useState(null);
     const [userImages, setUserImages] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -19,6 +23,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
     const [reviewContent, setReviewContent] = useState('');
     const [reviewRating, setReviewRating] = useState(0);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -206,36 +211,57 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
         }
     };
 
-    if (error) {
-        return <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">{error}</div>;
-    }
+    const navigateTo = (path) => {
+        navigate(path);
+    };
+
+    const handleMenuClick = (e) => {
+        switch (e.key) {
+            case 'home':
+                navigateTo('/home');
+                break;
+            case 'search':
+                navigateTo('/search');
+                break;
+            case 'edit':
+                navigateTo('/edit-profile');
+                break;
+            case 'my-profile':
+                navigateTo(`/profile/${currentUserId}`);
+                break;
+            case 'likes':
+                navigateTo('/my-likes');
+                break;
+            case 'logout':
+                onLogout();
+                break;
+            default:
+                break;
+        }
+    };
+
+    const isOwnProfile = currentUserId === profileId;
+
+    const menuItems = [
+        { label: 'Главная лента', key: 'home', icon: <HomeOutlined /> },
+        { label: 'Поиск', key: 'search', icon: <SearchOutlined /> },
+        ...(isOwnProfile ? [{ label: 'Редактирование аккаунта', key: 'edit', icon: <EditOutlined /> }] : []),
+        { label: 'Мой аккаунт', key: 'my-profile', icon: <UserSwitchOutlined /> },
+        { label: 'Мои лайки', key: 'likes', icon: <LikeOutlined /> },
+        { label: 'Выйти', key: 'logout', icon: <LogoutOutlined /> }
+    ];
 
     if (!userProfile) {
         return <div>Загрузка...</div>;
     }
 
-    const isOwnProfile = currentUserId === profileId;
-
-    const menuItems = [
-        {
-            label: 'Главная лента',
-            key: 'home',
-            icon: <HomeOutlined />
-        },
-        {
-            label: 'Поиск',
-            key: 'search',
-            icon: <SearchOutlined />
-        },
-        {
-            label: 'Редактирование аккаунта',
-            key: 'edit',
-            icon: <EditOutlined />
-        }
-    ];
-
     return (
-        <div className="bg-gray-100 px-10 py-10 rounded-3xl border-2 border-gray-200 max-w-4xl min-h-full">
+        <div className="container mx-auto p-10 py-10 rounded-3xl border-2 border-gray-200 max-w-4xl min-h-full">
+            <Menu
+                mode="horizontal"
+                onClick={handleMenuClick}
+                items={menuItems}
+            />
             {!isOwnProfile && (
                 <div className="mb-4">
                     {subscriptions.includes(currentUserId) ? (
@@ -259,7 +285,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                 )}
                 <Button
                     type="primary"
-                    icon={<LogoutOutlined/>}
+                    icon={<LogoutOutlined />}
                     onClick={onLogout}
                 >
                     Выйти
@@ -352,7 +378,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<Avatar icon={<UserOutlined />} />}
-                                title={<span>{subscriber}</span>}
+                                title={<Link to={`/profile/${subscriber.id}`}>{subscriber.username}</Link>}
                             />
                         </List.Item>
                     )}
@@ -373,7 +399,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                         <List.Item>
                             <List.Item.Meta
                                 avatar={<Avatar icon={<UserOutlined />} />}
-                                title={<span>{subscription}</span>}
+                                title={<Link to={`/profile/${subscription.id}`}>{subscription.username}</Link>}
                             />
                         </List.Item>
                     )}
