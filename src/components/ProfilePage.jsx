@@ -303,7 +303,6 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
         return <div>Загрузка...</div>;
     }
 
-
     return (
         <div className="container mx-auto p-10 py-10 rounded-3xl border-2 border-gray-200 max-w-4xl min-h-full">
             <Menu
@@ -345,8 +344,7 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
                     <label className="text-lg font-medium text-gray-600">Подписчики</label>
                     <p className="text-2xl text-purple-700">{subscribers.length}</p>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow cursor-pointer"
-                     onClick={() => setShowSubscriptions(true)}>
+                <div className="bg-white p-4 rounded-lg shadow cursor-pointer" onClick={() => setShowSubscriptions(true)}>
                     <label className="text-lg font-medium text-gray-600">Подписки</label>
                     <p className="text-2xl text-purple-700">{subscriptions.length}</p>
                 </div>
@@ -363,7 +361,7 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
                     </div>
                 ))}
             </div>
-            <div className="hover:sc">
+            <div>
                 <h2 className="text-2xl font-semibold mb-4 text-purple-700">Отзывы</h2>
                 {reviews.length > 0 ? (
                     <div className="bg-gray-100 rounded-xl p-4">
@@ -398,7 +396,7 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
             {/* Модальное окно для отзыва */}
             <Modal
                 title="Оставить отзыв"
-                open={showReviewModal}
+                visible={showReviewModal}
                 onCancel={() => setShowReviewModal(false)}
                 onOk={handleReviewSubmit}
             >
@@ -416,7 +414,7 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
             {/* Модальные окна для подписчиков и подписок */}
             <Modal
                 title="Подписчики"
-                open={showSubscribers}
+                visible={showSubscribers}
                 onCancel={() => setShowSubscribers(false)}
                 footer={null}
             >
@@ -437,7 +435,7 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
 
             <Modal
                 title="Подписки"
-                open={showSubscriptions}
+                visible={showSubscriptions}
                 onCancel={() => setShowSubscriptions(false)}
                 footer={null}
             >
