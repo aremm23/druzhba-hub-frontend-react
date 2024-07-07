@@ -7,3 +7,5 @@ export function EditProfilePage() {
         </div>
     );
 }
+
+export default EditProfilePage;

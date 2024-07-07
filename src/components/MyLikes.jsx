@@ -8,3 +8,5 @@ export function MyLikes() {
         </div>
     );
 }
+
+export default MyLikes;

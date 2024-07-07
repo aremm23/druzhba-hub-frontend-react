@@ -8,9 +8,10 @@ import {
     UserOutlined, HomeOutlined, EditOutlined, SearchOutlined,
     LogoutOutlined, LikeOutlined, UserSwitchOutlined
 } from '@ant-design/icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
-export default function ProfilePage({ currentUserId, token, profileId, onLogout }) {
+export default function ProfilePage({ currentUserId, token, onLogout }) {
+    const { profileId } = useParams();
     const [userProfile, setUserProfile] = useState(null);
     const [userImages, setUserImages] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -113,7 +114,19 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setSubscribers(response.data);
+                const subscriberIds = response.data;
+
+                const subscriberPromises = subscriberIds.map(subscriberId =>
+                    axios.get(`http://127.0.0.1:8080/api/profiles/${subscriberId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                );
+                const subscriberResponses = await Promise.all(subscriberPromises);
+                const subscribersData = subscriberResponses.map(res => res.data);
+
+                setSubscribers(subscribersData);
             } catch (error) {
                 setError('Не удалось получить подписчиков.');
                 console.error(error);
@@ -127,7 +140,19 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setSubscriptions(response.data);
+                const subscriptionIds = response.data;
+
+                const subscriptionPromises = subscriptionIds.map(subscriptionId =>
+                    axios.get(`http://127.0.0.1:8080/api/profiles/${subscriptionId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                );
+                const subscriptionResponses = await Promise.all(subscriptionPromises);
+                const subscriptionsData = subscriptionResponses.map(res => res.data);
+
+                setSubscriptions(subscriptionsData);
             } catch (error) {
                 setError('Не удалось получить подписки.');
                 console.error(error);
@@ -156,7 +181,19 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                     Authorization: `Bearer ${token}`
                 }
             });
-            setSubscriptions(response.data);
+            const subscriptionIds = response.data;
+
+            const subscriptionPromises = subscriptionIds.map(subscriptionId =>
+                axios.get(`http://127.0.0.1:8080/api/profiles/${subscriptionId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            );
+            const subscriptionResponses = await Promise.all(subscriptionPromises);
+            const subscriptionsData = subscriptionResponses.map(res => res.data);
+
+            setSubscriptions(subscriptionsData);
         } catch (error) {
             message.error('Не удалось подписаться на пользователя.');
             console.error(error);
@@ -177,7 +214,19 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                     Authorization: `Bearer ${token}`
                 }
             });
-            setSubscriptions(response.data);
+            const subscriptionIds = response.data;
+
+            const subscriptionPromises = subscriptionIds.map(subscriptionId =>
+                axios.get(`http://127.0.0.1:8080/api/profiles/${subscriptionId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            );
+            const subscriptionResponses = await Promise.all(subscriptionPromises);
+            const subscriptionsData = subscriptionResponses.map(res => res.data);
+
+            setSubscriptions(subscriptionsData);
         } catch (error) {
             message.error('Не удалось отписаться от пользователя.');
             console.error(error);
@@ -186,27 +235,26 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
 
     const handleReviewSubmit = async () => {
         try {
-            await axios.post(`http://127.0.0.1:8080/api/reviews`, {
-                profileFromId: currentUserId,
-                profileToId: profileId,
-                comment: reviewContent,
-                grade: reviewRating
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+            await axios.post(
+                `http://127.0.0.1:8080/api/reviews/${profileId}`,
+                { content: reviewContent, rating: reviewRating },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            });
-            message.success('Отзыв успешно добавлен.');
-            // После добавления отзыва перезагружаем список отзывов
+            );
+            message.success('Отзыв успешно оставлен.');
+            setShowReviewModal(false);
+            // Обновляем список отзывов после добавления нового отзыва
             const response = await axios.get(`http://127.0.0.1:8080/api/reviews/profile/${profileId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             setReviews(response.data);
-            setShowReviewModal(false);
         } catch (error) {
-            message.error('Не удалось добавить отзыв.');
+            message.error('Не удалось оставить отзыв.');
             console.error(error);
         }
     };
@@ -255,6 +303,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
         return <div>Загрузка...</div>;
     }
 
+
     return (
         <div className="container mx-auto p-10 py-10 rounded-3xl border-2 border-gray-200 max-w-4xl min-h-full">
             <Menu
@@ -264,7 +313,7 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
             />
             {!isOwnProfile && (
                 <div className="mb-4">
-                    {subscriptions.includes(currentUserId) ? (
+                    {subscriptions.find(subscription => subscription.id === currentUserId) ? (
                         <Button type="primary" onClick={() => handleUnsubscribe(currentUserId)}>Отписаться</Button>
                     ) : (
                         <Button type="primary" onClick={handleSubscribe}>Подписаться</Button>
@@ -273,12 +322,12 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
             )}
             <div className="flex justify-between items-center mb-10">
                 <div>
-                    <h1 className="text-5xl font-semibold text-purple-700">{userProfile.username}</h1>
-                    <p className="text-lg text-gray-600 mt-4">{userProfile.selfSummary}</p>
+                    <h1 className="text-5xl font-semibold text-purple-700">{userProfile?.username}</h1>
+                    <p className="text-lg text-gray-600 mt-4">{userProfile?.selfSummary}</p>
                 </div>
                 {userImages.length > 0 && (
                     <img
-                        src={userImages[userImages.length - 1].url}
+                        src={userImages[userImages.length - 1]?.url}
                         alt="Profile Avatar"
                         className="w-60 h-60 rounded-full object-cover border-4 border-purple-500 hover:scale-[1.01]"
                     />
@@ -303,8 +352,8 @@ export default function ProfilePage({ currentUserId, token, profileId, onLogout 
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow">
                     <label className="text-lg font-medium text-gray-600">Рейтинг</label>
-                    <p className="text-2xl text-purple-700">{userProfile.rate}</p>
-                    <Rate disabled defaultValue={userProfile.rate} />
+                    <p className="text-2xl text-purple-700">{userProfile?.rate}</p>
+                    <Rate disabled defaultValue={userProfile?.rate} />
                 </div>
             </div>
             <div className="grid grid-cols-3 gap-4 mb-10">

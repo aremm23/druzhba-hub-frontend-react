@@ -1,9 +1,9 @@
-// AuthentificationForm.jsx
-import React, {useEffect, useState} from "react";
-import axios from "axios";
-import LoginForm from "./LoginForm";
-import SignUpForm from "./SignUpForm";
-import SummaryForm from "./SummaryForm";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import LoginForm from './LoginForm';
+import SignUpForm from './SignUpForm';
+import SummaryForm from './SummaryForm';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthentificationForm({ onSuccess }) {
     const [showLogin, setShowLogin] = useState(true);
@@ -11,6 +11,7 @@ export default function AuthentificationForm({ onSuccess }) {
     const [token, setToken] = useState('');
     const [userId, setUserId] = useState(null);
     const [isSelfSummaryEmpty, setIsSelfSummaryEmpty] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isLoggedIn && userId) {
@@ -36,6 +37,7 @@ export default function AuthentificationForm({ onSuccess }) {
         setUserId(id);
         setIsLoggedIn(true);
         onSuccess(receivedToken, id);
+        navigate(`/profile/${id}`); // Перенаправление на страницу профиля текущего пользователя
     };
 
     return (
@@ -43,19 +45,18 @@ export default function AuthentificationForm({ onSuccess }) {
             <div>
                 {!isLoggedIn ? (
                     showLogin ? (
-                        <LoginForm toggleForm={() => setShowLogin(false)} onSuccess={handleLoginSuccess}/>
+                        <LoginForm toggleForm={() => setShowLogin(false)} onSuccess={handleLoginSuccess} />
                     ) : (
-                        <SignUpForm toggleForm={() => setShowLogin(true)} onSuccess={() => setShowLogin(true)}/>
+                        <SignUpForm toggleForm={() => setShowLogin(true)} onSuccess={() => setShowLogin(true)} />
                     )
                 ) : (
                     isSelfSummaryEmpty ? (
-                        <SummaryForm token={token} userId={userId}/>
+                        <SummaryForm token={token} userId={userId} />
                     ) : (
                         <div>Welcome! You are logged in.</div>
                     )
                 )}
             </div>
-
         </div>
     );
 }
