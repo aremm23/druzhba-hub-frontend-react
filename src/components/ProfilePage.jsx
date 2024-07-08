@@ -331,13 +331,6 @@ export default function ProfilePage({ currentUserId, token, onLogout }) {
                         className="w-60 h-60 rounded-full object-cover border-4 border-purple-500 hover:scale-[1.01]"
                     />
                 )}
-                <Button
-                    type="primary"
-                    icon={<LogoutOutlined />}
-                    onClick={onLogout}
-                >
-                    Выйти
-                </Button>
             </div>
             <div className="grid grid-cols-3 gap-4 text-center mb-10">
                 <div className="bg-white p-4 rounded-lg shadow cursor-pointer" onClick={() => setShowSubscribers(true)}>
