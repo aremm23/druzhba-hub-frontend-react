@@ -1,0 +1,63 @@
+.post-feed-page {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.rounded-lg {
+    border-radius: 8px;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.bg-gray-100 {
+    background-color: #f5f5f5;
+}
+
+.text-gray-800 {
+    color: #333333;
+}
+
+.bg-blue-50 {
+    background-color: #ebf8ff;
+}
+
+.text-purple-600 {
+    color: #6b46c1;
+}
+
+.text-purple-700 {
+    color: #553c9a;
+}
+
+.hover\:scale-105:hover {
+    transform: scale(1.05);
+}
+
+.transition-transform {
+    transition: transform 0.3s;
+}

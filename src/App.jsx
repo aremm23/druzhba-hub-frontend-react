@@ -6,6 +6,7 @@ import EditProfilePage from './components/EditProfilePage.jsx';
 import SearchPage from './components/SearchPage.jsx';
 import HomePage from './components/FeedPage.jsx';
 import MyLikes from './components/MyLikes.jsx';
+import NewPostPage from "./components/NewPostPage.jsx";
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -68,6 +69,14 @@ function App() {
                     path="/search"
                     element={token ? (
                         <SearchPage token={token} currentUserId={currentUserId} />
+                    ) : (
+                        <Navigate to="/" replace />
+                    )}
+                />
+                <Route
+                    path="/new-post"
+                    element={token ? (
+                        <NewPostPage token={token} currentUserId={currentUserId} />
                     ) : (
                         <Navigate to="/" replace />
                     )}
