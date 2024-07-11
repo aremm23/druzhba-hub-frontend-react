@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Spin, Steps} from 'antd';
-import {AppstoreTwoTone, LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined} from "@ant-design/icons";
+import { Spin, Steps } from 'antd';
+import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
 
 export default function SignUpForm({ toggleForm, onSuccess }) {
     const [email, setEmail] = useState('');
@@ -18,6 +18,8 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
     const [place, setPlace] = useState('');
     const [emailConfirming, setEmailConfirming] = useState(false);
     const [emailConfirmed, setEmailConfirmed] = useState(false);
+
+    const currentStep = emailConfirming ? 2 : (showAdditionalForm ? 1 : 0);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -99,32 +101,34 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
 
     return (
         <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
+            <h1 className="text-5xl font-semibold">Регистрация</h1>
+            <p className="font-medium text-lg text-gray-500 mt-4">Пожалуйста, заполните форму для создания аккаунта. Перед использованием приложения подтвердите email.</p>
             <Steps
+                current={currentStep}
+                className="p-6 h-auto"
                 items={[
                     {
-                        title: 'Register',
-                        status: 'finish',
+                        title: 'Регистрация',
+                        status: currentStep > 0 ? 'finish' : 'process',
                         icon: <UserOutlined />,
                     },
                     {
-                        title: 'Additional  information',
-                        status: 'finish',
+                        title: 'О себе',
+                        status: currentStep > 1 ? 'finish' : (currentStep === 1 ? 'process' : 'wait'),
                         icon: <SolutionOutlined />,
                     },
                     {
-                        title: 'Email confirming',
-                        status: 'process',
+                        title: 'Подтверждение',
+                        status: emailConfirming ? 'process' : (currentStep > 1 ? 'finish' : 'wait'),
                         icon: <LoadingOutlined />,
                     },
                     {
-                        title: 'Done',
-                        status: 'process',
+                        title: 'Готово',
+                        status: emailConfirmed ? 'finish' : 'wait',
                         icon: <SmileOutlined />,
                     },
                 ]}
             />
-            <h1 className="text-5xl font-semibold">Регистрация</h1>
-            <p className="font-medium text-lg text-gray-500 mt-4">Пожалуйста, заполните форму для создания аккаунта. Перед использованием приложения подтвердите email.</p>
             {emailConfirming ? (
                 <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75">
                     <Spin size="large" />
@@ -132,12 +136,11 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
                 </div>
             ) : emailConfirmed ? (
                 <div className="text-center">
-                    <p className="text-2xl  mt-4">Теперь вы можете залогиниться в аккаунт.</p>
+                    <p className="text-2xl mt-8">Теперь вы можете залогиниться в аккаунт.</p>
                     <button
-                        className="p-6 active:scale-[.94] active:duration-75 hover:scale-[1.03] ease-in-out transition-all py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
+                        className="active:scale-[.98] active:duration-75 p-6 mt-7 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
                         onClick={toggleForm}
                     >
-                        <AppstoreTwoTone />
                         Продолжить
                     </button>
                 </div>
@@ -240,7 +243,7 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
                                 <input
                                     type="text"
                                     className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
-                                    placeholder="Расскажите о себе"
+                                    placeholder="Расскажите о себе, рекомендуется оставить ссылку на вашу соц сеть"
                                     value={selfSummary}
                                     onChange={(e) => setSelfSummary(e.target.value)}
                                     maxLength={300}
