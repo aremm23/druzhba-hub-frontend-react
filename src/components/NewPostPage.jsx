@@ -85,6 +85,7 @@ export function NewPostPage({ token, currentUserId }) {
             setEvents([...events, newEventResponse]);
             setNewEvent({ summary: '', categoryId: null, location: '', startAt: null });
             setEventFormVisible(false);
+            window.location.reload(); // Перезагрузка страницы
         }).catch(error => {
             message.error('Ошибка при создании мероприятия!');
         });

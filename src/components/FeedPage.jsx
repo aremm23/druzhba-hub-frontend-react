@@ -191,35 +191,40 @@ export function PostFeedPage({ token, currentUserId }) {
     const renderProfiles = () => (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h3 className="text-xl font-semibold mb-4 text-purple-700">Рекомендованные профили</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {recommendedProfiles.map(profile => (
-                    <div key={profile.id} className="text-center transition-transform transform hover:scale-105">
-                        <Avatar size={64} src={profile.avatarUrl} icon={<UserOutlined />} className="mx-auto" />
-                        <a href={`/profile/${profile.id}`} className="block mt-2 text-sm font-semibold text-purple-600">{profile.username}</a>
-                    </div>
-                ))}
-            </div>
+            {loadingProfiles ? (
+                <div className="text-center"><Spin tip="Загрузка профилей..." /></div>
+            ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {recommendedProfiles.map(profile => (
+                        <div key={profile.id} className="text-center transition-transform transform hover:scale-105">
+                            <Avatar size={64} src={profile.avatarUrl} icon={<UserOutlined />} className="mx-auto" />
+                            <a href={`/profile/${profile.id}`} className="block mt-2 text-sm font-semibold text-purple-600">{profile.username}</a>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 
     return (
-        <div className="max-w-4xl mx-auto p-6 post-feed-page">
-            <h1 className="text-3xl font-bold text-purple-700 text-center mb-8">Рекомендованные посты</h1>
-            {loadingPosts ? (
-                <div className="text-center"><Spin tip="Загрузка постов..." /></div>
-            ) : (
-                <div>
-                    {posts.map((post, index) => (
-                        <React.Fragment key={post.id}>
-                            {renderPost(post)}
-                            {(index + 1) % 3 === 0 && index !== posts.length - 1 && renderProfiles()}
-                        </React.Fragment>
-                    ))}
-                </div>
-            )}
-            {loadingProfiles && (
-                <div className="text-center"><Spin tip="Загрузка профилей..." /></div>
-            )}
+        <div className="max-w-4xl mx-auto p-6 post-feed-page flex">
+            <div className="w-3/4 pr-4">
+                <h1 className="text-3xl font-bold text-purple-700 text-center mb-8">Рекомендованные посты</h1>
+                {loadingPosts ? (
+                    <div className="text-center"><Spin tip="Загрузка постов..." /></div>
+                ) : (
+                    <div>
+                        {posts.map((post, index) => (
+                            <React.Fragment key={post.id}>
+                                {renderPost(post)}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )}
+            </div>
+            <div className="w-1/4 pl-4">
+                {renderProfiles()}
+            </div>
             <Modal
                 title="Пользователи, лайкнувшие пост"
                 open={showLikesModal}

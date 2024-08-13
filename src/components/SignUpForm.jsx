@@ -101,8 +101,16 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
 
     return (
         <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
+            <div className="flex justify-center mb-8">
+                <img
+                    src="https://storage.cloud.google.com/artsem-druzhba-hub/DALL%C2%B7E%202024-08-13%2011.53.54%20-%20A%20logo%20for%20a%20website%20called%20'Druzhba%20Hub'%20focused%20on%20friend-finding.%20The%20design%20should%20use%20a%20black%20and%20orange%20color%20scheme%2C%20with%20the%20text%20'Druzhba'%20in.webp"
+                    alt="Druzhba Hub Logo"
+                    className="w-32 h-32 rounded-full object-cover"
+                />
+            </div>
             <h1 className="text-5xl font-semibold">Регистрация</h1>
-            <p className="font-medium text-lg text-gray-500 mt-4">Пожалуйста, заполните форму для создания аккаунта. Перед использованием приложения подтвердите email.</p>
+            <p className="font-medium text-lg text-gray-500 mt-4">Пожалуйста, заполните форму для создания аккаунта.
+                Перед использованием приложения подтвердите email.</p>
             <Steps
                 current={currentStep}
                 className="p-6 h-auto"
@@ -110,28 +118,28 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
                     {
                         title: 'Регистрация',
                         status: currentStep > 0 ? 'finish' : 'process',
-                        icon: <UserOutlined />,
+                        icon: <UserOutlined/>,
                     },
                     {
                         title: 'О себе',
                         status: currentStep > 1 ? 'finish' : (currentStep === 1 ? 'process' : 'wait'),
-                        icon: <SolutionOutlined />,
+                        icon: <SolutionOutlined/>,
                     },
                     {
                         title: 'Подтверждение',
                         status: emailConfirming ? 'process' : (currentStep > 1 ? 'finish' : 'wait'),
-                        icon: <LoadingOutlined />,
+                        icon: <LoadingOutlined/>,
                     },
                     {
                         title: 'Готово',
                         status: emailConfirmed ? 'finish' : 'wait',
-                        icon: <SmileOutlined />,
+                        icon: <SmileOutlined/>,
                     },
                 ]}
             />
             {emailConfirming ? (
                 <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75">
-                    <Spin size="large" />
+                    <Spin size="large"/>
                     <p className="mt-4 text-xl">Пожалуйста, подтвердите email...</p>
                 </div>
             ) : emailConfirmed ? (
@@ -149,20 +157,24 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
                     {!showAdditionalForm ? (
                         <form onSubmit={handleSubmit} className="mt-8">
                             {errorMessage && (
-                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <div
+                                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <strong className="font-bold">Ошибка!</strong>
                                     <span className="block sm:inline"> {errorMessage}</span>
                                 </div>
                             )}
                             {successMessage && (
-                                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <div
+                                    className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <strong className="font-bold">Успех!</strong>
                                     <span className="block sm:inline"> {successMessage}</span>
                                 </div>
                             )}
                             {loading && (
                                 <div className="flex justify-center items-center mb-4">
-                                    <Spin size="large" />
+                                    <Spin size="large"/>
                                 </div>
                             )}
                             <div>
@@ -222,20 +234,24 @@ export default function SignUpForm({ toggleForm, onSuccess }) {
                     ) : (
                         <form onSubmit={handleAdditionalSubmit} className="mt-8">
                             {errorMessage && (
-                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <div
+                                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <strong className="font-bold">Ошибка!</strong>
                                     <span className="block sm:inline"> {errorMessage}</span>
                                 </div>
                             )}
                             {successMessage && (
-                                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <div
+                                    className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                                    role="alert">
                                     <strong className="font-bold">Успех!</strong>
                                     <span className="block sm:inline"> {successMessage}</span>
                                 </div>
                             )}
                             {loading && (
                                 <div className="flex justify-center items-center mb-4">
-                                    <Spin size="large" />
+                                    <Spin size="large"/>
                                 </div>
                             )}
                             <div>

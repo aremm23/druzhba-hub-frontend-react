@@ -40,8 +40,15 @@ export default function LoginForm({ toggleForm, onSuccess  }) {
 
     return (
         <div className="bg-white px-10 py-20 rounded-3xl border-2 border-gray-200">
-            <h1 className="text-5xl font-semibold">Добро пожаловать</h1>
-            <p className="font-medium text-lg text-gray-500 mt-4">Привет! Пожалуйста введи свои данные</p>
+            <div className="flex justify-center mb-8">
+                <img
+                    src="https://storage.cloud.google.com/artsem-druzhba-hub/DALL%C2%B7E%202024-08-13%2011.53.54%20-%20A%20logo%20for%20a%20website%20called%20'Druzhba%20Hub'%20focused%20on%20friend-finding.%20The%20design%20should%20use%20a%20black%20and%20orange%20color%20scheme%2C%20with%20the%20text%20'Druzhba'%20in.webp"
+                    alt="Druzhba Hub Logo"
+                    className="w-32 h-32 rounded-full object-cover"
+                />
+            </div>
+            <h1 className="text-5xl font-semibold text-center">Добро пожаловать</h1>
+            <p className="font-medium text-lg text-gray-500 mt-4 text-center">Привет! Пожалуйста введи свои данные</p>
             <form onSubmit={handleSubmit} className="mt-8">
                 {errorMessage && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -93,14 +100,15 @@ export default function LoginForm({ toggleForm, onSuccess  }) {
                 </div>
             </form>
             <div className="mt-8 flex flex-col gap-y-4">
-                <p className="font-medium text-base">Всё ещё нету аккаунта?</p>
+                <p className="font-medium text-base text-center">Всё ещё нету аккаунта?</p>
                 <span
                     className="text-violet-500 text-base font-medium ml-2 cursor-pointer"
                     onClick={toggleForm}
                 >
-                    Регистрация
-                </span>
+                Регистрация
+            </span>
             </div>
         </div>
     );
+
 }

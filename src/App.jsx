@@ -7,6 +7,7 @@ import SearchPage from './components/SearchPage.jsx';
 import HomePage from './components/FeedPage.jsx';
 import MyLikes from './components/MyLikes.jsx';
 import NewPostPage from "./components/NewPostPage.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -40,66 +41,69 @@ function App() {
 
     return (
         <Router>
-            <Routes>
-                <Route
-                    path="/"
-                    element={<AuthentificationForm onSuccess={handleLoginSuccess} />}
-                />
-                <Route
-                    path="/profile/:profileId"
-                    element={token ? (
-                        <ProfilePage
-                            currentUserId={currentUserId}
-                            token={token}
-                            onLogout={handleLogout}
-                        />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-                <Route
-                    path="/edit-profile"
-                    element={token ? (
-                        <EditProfilePage token={token} currentUserId={currentUserId} />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-                <Route
-                    path="/search"
-                    element={token ? (
-                        <SearchPage token={token} currentUserId={currentUserId} />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-                <Route
-                    path="/new-post"
-                    element={token ? (
-                        <NewPostPage token={token} currentUserId={currentUserId} />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-                <Route
-                    path="/home"
-                    element={token ? (
-                        <HomePage token={token} currentUserId={currentUserId} />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-                <Route
-                    path="/my-likes"
-                    element={token ? (
-                        <MyLikes token={token} currentUserId={currentUserId} />
-                    ) : (
-                        <Navigate to="/" replace />
-                    )}
-                />
-            </Routes>
+            <div className="flex-col max-h-10" >
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<AuthentificationForm onSuccess={handleLoginSuccess}/>}
+                    />
+                    <Route
+                        path="/profile/:profileId"
+                        element={token ? (
+                            <ProfilePage
+                                currentUserId={currentUserId}
+                                token={token}
+                                onLogout={handleLogout}
+                            />
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                    <Route
+                        path="/edit-profile"
+                        element={token ? (
+                            <EditProfilePage token={token} currentUserId={currentUserId}/>
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                    <Route
+                        path="/search"
+                        element={token ? (
+                            <SearchPage token={token} currentUserId={currentUserId}/>
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                    <Route
+                        path="/new-post"
+                        element={token ? (
+                            <NewPostPage token={token} currentUserId={currentUserId}/>
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                    <Route
+                        path="/home"
+                        element={token ? (
+                            <HomePage token={token} currentUserId={currentUserId}/>
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                    <Route
+                        path="/my-likes"
+                        element={token ? (
+                            <MyLikes token={token} currentUserId={currentUserId}/>
+                        ) : (
+                            <Navigate to="/" replace/>
+                        )}
+                    />
+                </Routes>
+                <Footer/>
+            </div>
         </Router>
-    );
+);
 }
 
 export default App;
